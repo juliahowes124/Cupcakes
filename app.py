@@ -22,6 +22,13 @@ db.create_all()
 
 toolbar = DebugToolbarExtension(app)
 
+@app.route("/")
+def root():
+    """Homepage"""
+
+    return render_template("index.html")
+    
+
 @app.route("/api/cupcakes")
 def list_cupcakes():
     """Show all cupcakes"""
