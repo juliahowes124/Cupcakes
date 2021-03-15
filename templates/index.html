@@ -11,6 +11,17 @@
 <body>
     <h1>Cupcakes</h1>
     <ul id="cupcakes-list"></ul>
+
+    <form action="" id="new-cupcake-form" method="POST">
+        <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
+        <p>Size: <input type="text" name="size" id="size"></p>
+        <p>Rating: <input type="text" name="rating" id="rating"></p>
+        <p>Image: <input type="text" name="image" id="image"></p>
+        <button type="submit">Create</button>
+    </form>
+
+
+
     <script src="http://unpkg.com/jquery"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <script src="/static/index.js"></script>
