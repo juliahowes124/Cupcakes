@@ -129,6 +129,16 @@ class CupcakeViewsTestCase(TestCase):
                 }
             })
 
+    def test_patch_cupcake_404(self):
+        with app.test_client() as client:
+            url = "/api/cupcakes/10000"
+            resp = client.patch(url, json={"flavor": "mint",
+                                            "size": "medium",
+                                            "rating": 6,
+                                            "image": "http://test.com/cupcake.jpg"})
+
+            self.assertEqual(resp.status_code, 404)
+
     def test_delete_cupcake(self):
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
@@ -140,6 +150,13 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(data, {"message": "Deleted"})
 
             self.assertEqual(Cupcake.query.count(), 0)
+
+    def test_delete_cupcake_404(self):
+        with app.test_client() as client:
+            url = "/api/cupcakes/10000"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)
 
 
 

@@ -33,7 +33,16 @@ def root():
 def list_cupcakes():
     """Show all cupcakes"""
 
-    cupcakes = Cupcake.query.all()
+    search_term = request.args.get('searchTerm')
+    # print(f"Request: {request}")
+    # print(search_term)
+    if search_term:
+        cupcakes = Cupcake.query.filter(search_term == Cupcake.flavor).all()
+    else:
+        cupcakes = Cupcake.query.all()
+
+    print(cupcakes)
+    
     serialized = [c.serialize() for c in cupcakes]
 
     return jsonify(cupcakes=serialized)
@@ -94,5 +103,3 @@ def delete_cupcake(cupcake_id):
     db.session.commit()
 
     return jsonify(message="Deleted")
-
-
