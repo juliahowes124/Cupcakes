@@ -34,14 +34,11 @@ def list_cupcakes():
     """Show all cupcakes"""
 
     search_term = request.args.get('searchTerm')
-    # print(f"Request: {request}")
-    # print(search_term)
+
     if search_term:
-        cupcakes = Cupcake.query.filter(search_term == Cupcake.flavor).all()
+        cupcakes = Cupcake.query.filter(Cupcake.flavor.ilike(f"%{search_term}%")).all()
     else:
         cupcakes = Cupcake.query.all()
-
-    print(cupcakes)
     
     serialized = [c.serialize() for c in cupcakes]
 
