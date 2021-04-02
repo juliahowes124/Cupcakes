@@ -7,12 +7,23 @@ $imageInput = $("#image")
 $searchForm = $("#search-form")
 $searchTerm = $("#search-term")
 
-async function start() {
-	let response = await axios.get("/api/cupcakes")
-	let { cupcakes } = response.data
-	for (let cupcake of cupcakes) {
-		$cupcakesList.append(`<li>${cupcake.flavor}</li>`) // helper function to add to DOM 
+class Cupcake {
+	static async getAll(searchTerm) {
+		const response = await axios.get("/api/cupcakes",  { params: { searchTerm } });
+		const { cupcakes } = response.data;
+		return { cupcakes };
 	}
+
+	static async create(cupcakeInfo) {
+		let response = await axios.post('/api/cupcakes', cupcakeInfo)
+		let { cupcake } = response.data;
+		return { cupcake };
+	}
+}
+
+async function start() {
+	let { cupcakes } = await Cupcake.getAll();
+	addCupcakesToDom(cupcakes);
 }
 
 $cupcakeForm.on('submit', async (e) => {
@@ -22,29 +33,20 @@ $cupcakeForm.on('submit', async (e) => {
 	let rating = $ratingInput.val();
 	let size = $sizeInput.val();
 	let image = $imageInput.val();
-	let response = await axios.post('/api/cupcakes', {
-		flavor,
-		rating,
-		size,
-		image
-	})
-
-	let { cupcakeFlavor } = response.data.cupcake;
-
-	$cupcakesList.append(`<li>${cupcakeFlavor}</li>`)
+	const { cupcake } = await Cupcake.create({flavor, rating, size, image}) 
+	$cupcakesList.append(`<li>${cupcake.flavor}</li>`)
 })
 
 $searchTerm.on("input", async (e) => {
-	let searchTerm = $searchTerm.val();
-	let response = await axios.get('/api/cupcakes', { params: { searchTerm } });
-	addCupcakesToDom(response.data.cupcakes);
+	const { cupcakes } = await Cupcake.getAll($searchTerm.val());
+	addCupcakesToDom(cupcakes);
 })
 
 
 function addCupcakesToDom(cupcakes) {
 	$cupcakesList.empty();
 	for (let cupcake of cupcakes) {
-		$cupcakesList.append(`<li>${cupcake.flavor}</li>`) // helper function to add to DOM 
+		$cupcakesList.append(`<li>${cupcake.flavor}</li>`)
 	}
 }
 start()
