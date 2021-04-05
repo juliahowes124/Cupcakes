@@ -79,7 +79,6 @@ def update_cupcake(cupcake_id):
 
     cupcake = Cupcake.query.get_or_404(cupcake_id)
     data = request.json
-
     cupcake.flavor = data.get("flavor")
     cupcake.size = data.get("size")
     cupcake.rating = data.get("rating")
