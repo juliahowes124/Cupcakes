@@ -26,6 +26,9 @@ class Cupcake(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     image = db.Column(db.Text, nullable=False, default="https://tinyurl.com/demo-cupcake")
 
+    ingredients = db.relationship('Ingredient',
+                                  secondary="cupcakes_ingredients")
+
     def serialize(self):
         """Serialize to dictionary."""
 
@@ -34,7 +37,26 @@ class Cupcake(db.Model):
             "flavor": self.flavor,
             "size": self.size,
             "rating": self.rating,
-            "image": self.image
+            "image": self.image,
+            "ingredients": self.ingredients
         }
 
 
+class Ingredient(db.Model):
+    """ Ingredient Table """
+
+    __tablename__ = "ingredients"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(50), nullable=False)
+
+
+class CupcakeIngredient(db.Model):
+    """ Cupcake-Ingredient Intermediate Table """
+
+    __tablename__ = "cupcakes_ingredients"
+
+    cupcake_id = db.Column(db.Integer, db.ForeignKey('cupcakes.id'),
+                           nullable=False, primary_key=True)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'),
+                              nullable=False, primary_key=True)

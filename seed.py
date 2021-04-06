@@ -1,5 +1,5 @@
 from app import app
-from models import db, Cupcake
+from models import db, Cupcake, Ingredient
 
 db.drop_all()
 db.create_all()
@@ -17,5 +17,13 @@ c2 = Cupcake(
     image="https://www.bakedbyrachel.com/wp-content/uploads/2018/01/chocolatecupcakesccfrosting1_bakedbyrachel.jpg"
 )
 
-db.session.add_all([c1, c2])
+i1 = Ingredient(
+    name="sugar"
+)
+
+i2 = Ingredient(
+    name="chocolate"
+)
+
+db.session.add_all([c1, c2, i1, i2])
 db.session.commit()
