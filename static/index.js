@@ -30,6 +30,11 @@ class Cupcake {
 		let { cupcake } = response.data;
 		return { cupcake };
 	}
+
+	static async delete(cupcakeId) {
+		await axios.delete(`/api/cupcakes/${cupcakeId}`);
+	}
+	
 }
 
 async function start() {
@@ -57,7 +62,12 @@ $searchTerm.on("input", async (e) => {
 function addCupcakesToDom(cupcakes) {
 	$cupcakesList.empty();
 	for (let cupcake of cupcakes) {
-		$cupcakesList.append(`<li class="cupcake" data-id="${cupcake.id}" style="cursor: pointer">${cupcake.flavor}</li>`)
+		$cupcakesList.append(`<li class="cupcake" data-id="${cupcake.id}" style="cursor: pointer">
+													<p class="cupcake-flavor">${cupcake.flavor}<p>
+													<p class="cupcake-size">${cupcake.size}<p>
+													<p class="cupcake-rating">${cupcake.rating}<p>
+													<button class="delete-btn">Delete</button>
+													</li>`)
 	}
 }
 
@@ -65,13 +75,14 @@ function addCupcakesToDom(cupcakes) {
 $editForm.hide();
 
 $cupcakesList.on('click','.cupcake', (e) => {
-	console.log($(e.target).data('id'));
-	let flavor = $(e.target).text();
-	$editForm.data('id', $(e.target).data('id'));
+	const $cupcakeLi = $(e.target).parent()
+	let flavor = $cupcakeLi.find('.cupcake-flavor').text();
+	let size = $cupcakeLi.find('.cupcake-size').text();
+	let rating = $cupcakeLi.find('.cupcake-rating').text();
+	$editForm.data('id', $cupcakeLi.data('id'));
 	$editForm.find('input[name="flavor"]').val(flavor)
-	$editForm.find('input[name="size"]').val(flavor)
-	$editForm.find('input[name="rating"]').val(flavor)
-	$editForm.find('input[name="image"]').val(flavor)
+	$editForm.find('input[name="size"]').val(size)
+	$editForm.find('input[name="rating"]').val(rating)
 	$editForm.show();
 })
 
@@ -82,9 +93,16 @@ $editForm.on('submit', async (e) => {
 	let rating = +$editForm.find('input[name="rating"]').val()
 	let size = $editForm.find('input[name="size"]').val()
 	let image = $editForm.find('input[name="image"]').val()
-	const { cupcake } = await Cupcake.update({flavor, rating, size, image}, cupcakeId) 
-	console.log('updated, ', cupcake.flavor) // FIX THIS
+	await Cupcake.update({flavor, rating, size, image}, cupcakeId) 
+	let { cupcakes } = await Cupcake.getAll();
+	addCupcakesToDom(cupcakes);
+	$editForm.hide();
 })
 
+$cupcakesList.on('click','.delete-btn', async (e) => {
+	const cupcakeId = $(e.target).parent().data('id');
+	await Cupcake.delete(cupcakeId);
+	$(e.target).parent().remove();
+})
 
 start()
