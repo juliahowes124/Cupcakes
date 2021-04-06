@@ -66,6 +66,7 @@ function addCupcakesToDom(cupcakes) {
 													<p class="cupcake-flavor">${cupcake.flavor}<p>
 													<p class="cupcake-size">${cupcake.size}<p>
 													<p class="cupcake-rating">${cupcake.rating}<p>
+													<p class="cupcake-rating">${cupcake.ingredients}<p>
 													<button class="delete-btn">Delete</button>
 													</li>`)
 	}

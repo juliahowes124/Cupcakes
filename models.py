@@ -38,7 +38,7 @@ class Cupcake(db.Model):
             "size": self.size,
             "rating": self.rating,
             "image": self.image,
-            "ingredients": self.ingredients
+            "ingredients": [ingredient.name for ingredient in self.ingredients]
         }
 
 
