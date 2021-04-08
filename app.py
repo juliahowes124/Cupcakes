@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = "secret"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///cupcakes"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
@@ -36,7 +36,7 @@ def list_ingredients():
     ingredients = Ingredient.query.all()
     serialized = [i.serialize() for i in ingredients]
     return jsonify(ingredients=serialized)
-    
+
 
 @app.route("/api/cupcakes")
 def list_cupcakes():
@@ -75,6 +75,10 @@ def add_cupcake():
         rating=data.get("rating"),
         image=data.get("image") or None
     )
+
+    for id in data.get('ingredientIds'):
+        ingredient = Ingredient.query.get(id)
+        cupcake.ingredients.append(ingredient)
 
     db.session.add(cupcake)
     db.session.commit()

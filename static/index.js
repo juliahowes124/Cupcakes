@@ -49,10 +49,11 @@ async function displayIngredientsOnForm() {
 	const { ingredients } = response.data;
 	for (let {id, name} of ingredients) {
 		$ingredientsList.append(`
-			<input type="checkbox" id="${name}" name="${name}">
+			<input type="checkbox" id="${id}" name="${name}">
       <label for="${name}">${name}</label>
 		`)
 	}
+	
 }
 
 $cupcakeForm.on('submit', async (e) => {
@@ -62,7 +63,13 @@ $cupcakeForm.on('submit', async (e) => {
 	let rating = $ratingInput.val();
 	let size = $sizeInput.val();
 	let image = $imageInput.val();
-	const { cupcake } = await Cupcake.create({flavor, rating, size, image}) 
+	let ingredientIds = [];
+	for (let checkbox of $('input[type=checkbox]')) {
+		if(checkbox.checked) {
+			ingredientIds.push(checkbox.id)
+		}
+	}
+	const { cupcake } = await Cupcake.create({flavor, rating, size, image, ingredientIds}) 
 	$cupcakesList.append(`<li>${cupcake.flavor}</li>`)
 })
 
