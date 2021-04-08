@@ -1,4 +1,5 @@
 $cupcakesList = $("#cupcakes-list")
+$ingredientsList = $("#ingredients-list")
 $cupcakeForm = $("#new-cupcake-form")
 $flavorInput = $("#flavor")
 $ratingInput = $("#rating")
@@ -40,6 +41,18 @@ class Cupcake {
 async function start() {
 	let { cupcakes } = await Cupcake.getAll();
 	addCupcakesToDom(cupcakes);
+	displayIngredientsOnForm();
+}
+
+async function displayIngredientsOnForm() {
+	const response = await axios.get("/api/ingredients");
+	const { ingredients } = response.data;
+	for (let {id, name} of ingredients) {
+		$ingredientsList.append(`
+			<input type="checkbox" id="${name}" name="${name}">
+      <label for="${name}">${name}</label>
+		`)
+	}
 }
 
 $cupcakeForm.on('submit', async (e) => {

@@ -6,7 +6,7 @@ from flask import Flask, render_template, redirect, flash, jsonify, request
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import db, connect_db, Cupcake
+from models import db, connect_db, Cupcake, Ingredient
 
 app = Flask(__name__)
 
@@ -27,6 +27,15 @@ def root():
     """Homepage"""
 
     return render_template("index.html")
+
+
+@app.route("/api/ingredients")
+def list_ingredients():
+    """ Show all ingredients """
+    
+    ingredients = Ingredient.query.all()
+    serialized = [i.serialize() for i in ingredients]
+    return jsonify(ingredients=serialized)
     
 
 @app.route("/api/cupcakes")
