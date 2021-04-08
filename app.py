@@ -38,6 +38,22 @@ def list_ingredients():
     return jsonify(ingredients=serialized)
 
 
+@app.route('/api/ingredients', methods=["POST"])
+def add_ingredient():
+    """ Add an ingredient """
+   
+    data = request.json
+
+    ingredient = Ingredient(
+        name=data.get("name")
+    )
+
+    db.session.add(ingredient)
+    db.session.commit()
+
+    return (jsonify(ingredient=ingredient.serialize()), 201)
+
+
 @app.route("/api/cupcakes")
 def list_cupcakes():
     """Show all cupcakes"""
@@ -96,6 +112,11 @@ def update_cupcake(cupcake_id):
     cupcake.size = data.get("size")
     cupcake.rating = data.get("rating")
     cupcake.image = data.get("image") or None
+
+    cupcake.ingredients = []
+    for id in data.get('ingredientIds'):
+        ingredient = Ingredient.query.get(id)
+        cupcake.ingredients.append(ingredient)
 
     db.session.commit()
 
