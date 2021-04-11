@@ -12,17 +12,19 @@
 </head>
 
 <body>
-    <h1>Cupcakes</h1>
-
+    <h1 class="text-center my-4">Cupcakes</h1>
     <div class="container">
+        <div class="row m-3">
+            <div>Search Cupcakes</div>
+            <input type="text" name="search-term" id="search-term" class="mb-4">
+            <button class="btn btn-primary add-cupcake-btn">Add Cupcake</button>
+            <button class="btn btn-primary add-ingredient-btn">Add Ingredient</button>
+        </div>
         <div class="row">
-            <div class="col-8">
-                <div>Search Cupcakes</div>
-                <input type="text" name="search-term" id="search-term">
-            
+            <div class="col m-3">
                 <div id="cupcakes-list"><!-- Cupcakes added here --></div>            
             </div>
-            <div class="col-4">
+            <div class="col">
                 <form action="" id="new-cupcake-form" method="POST">
                     <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
                     <p>Size: <input type="text" name="size" id="size"></p>
@@ -30,6 +32,11 @@
                     <p>Image: <input type="text" name="image" id="image"></p>
                     <p>Ingredients:</p>
                     <div id="ingredients-list-create"><!-- Ingredient list will be added here --></div>
+                    <button type="submit" class="btn btn-primary float-right">Create</button>
+                </form>
+
+                <form action="" id="new-ingredient-form" method="POST">
+                    <p>Name: <input type="text" name="name" id="name"></p>
                     <button type="submit" class="btn btn-primary float-right">Create</button>
                 </form>
             

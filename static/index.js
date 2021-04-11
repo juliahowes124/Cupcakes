@@ -2,6 +2,7 @@ $cupcakesList = $("#cupcakes-list")
 $ingredientsListCreate = $("#ingredients-list-create")
 $ingredientsListEdit = $("#ingredients-list-edit")
 $cupcakeForm = $("#new-cupcake-form")
+$ingredientForm = $("#new-ingredient-form")
 $flavorInput = $("#flavor")
 $ratingInput = $("#rating")
 $sizeInput = $("#size")
@@ -9,6 +10,8 @@ $imageInput = $("#image")
 $searchForm = $("#search-form")
 $searchTerm = $("#search-term")
 $editForm = $('.cupcake-edit')
+$addCupcakeBtn = $('.add-cupcake-btn')
+$addIngredientBtn = $('.add-ingredient-btn')
 
 class Cupcake {
 	static async getAll(searchTerm) {
@@ -70,7 +73,7 @@ $cupcakeForm.on('submit', async (e) => {
 		}
 	}
 	const { cupcake } = await Cupcake.create({flavor, rating, size, image, ingredientIds}) 
-	$cupcakesList.append(`<li>${cupcake.flavor}</li>`)
+	$cupcakesList.append(generateCupcakeCard(cupcake))
 })
 
 $searchTerm.on("input", async (e) => {
@@ -85,8 +88,8 @@ function generateCupcakeCard(cupcake) {
 		return acc;
 	}, '');
 	return `
-		<div class="card cupcake" style="width: 18rem;" data-id="${id}" style="cursor: pointer">
-			<img src="${image}" class="card-img-top" alt="${flavor}">
+		<div class="card cupcake my-3 w-100" style="width: 18rem;" data-id="${id}" style="cursor: pointer">
+			<img src="${image}" class="card-img-top" height=300 alt="${flavor}" style="object-fit: cover">
 			<div class="card-body">
 				<h5 class="card-title cupcake-flavor">${flavor}</h5>
 				<p class="cupcake-size">${size}<p>
@@ -96,8 +99,8 @@ function generateCupcakeCard(cupcake) {
 				${ingredientHtml}
 			</ul>
 			<div class="card-body">
-				<button class="edit-btn btn btn-secondary">Edit</button>
-				<button class="delete-btn btn btn-danger">Delete</button>
+			<button class="delete-btn btn btn-danger float-right m-1">Delete</button>
+				<button class="edit-btn btn btn-secondary float-right m-1">Edit</button>
 			</div>
 		</div>
 	`
@@ -113,6 +116,8 @@ function addCupcakesToDom(cupcakes) {
 
 
 $editForm.hide();
+$cupcakeForm.hide();
+$ingredientForm.hide();
 
 $cupcakesList.on('click','.edit-btn', (e) => {
 	const $cupcakeLi = $(e.target).closest('.cupcake');
@@ -152,5 +157,15 @@ $cupcakesList.on('click','.delete-btn', async (e) => {
 	await Cupcake.delete(cupcakeId);
 	$(e.target).closest('li').remove();
 })
+
+$addCupcakeBtn.on('click', () => {
+	$ingredientForm.hide();
+	$cupcakeForm.show();
+});
+
+$addIngredientBtn.on('click', () => {
+	$cupcakeForm.hide();
+	$ingredientForm.show();
+});
 
 start()
