@@ -5,34 +5,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://bootswatch.com/4/minty/bootstrap.css"
+        rel="stylesheet">
     <title>Cupcakes</title>
 </head>
 
 <body>
     <h1>Cupcakes</h1>
 
-    <div>Search Cupcakes</div>
-    <input type="text" name="search-term" id="search-term">
-
-    <ul id="cupcakes-list"></ul>
-
-    <form action="" id="new-cupcake-form" method="POST">
-        <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
-        <p>Size: <input type="text" name="size" id="size"></p>
-        <p>Rating: <input type="text" name="rating" id="rating"></p>
-        <p>Image: <input type="text" name="image" id="image"></p>
-        <p>Ingredients:</p>
-        <div id="ingredients-list"><!-- Ingredient list will be added here --></div>
-        <button type="submit">Create</button>
-    </form>
-
-    <form action="" class="cupcake-edit" method="POST">
-        <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
-        <p>Size: <input type="text" name="size" id="size"></p>
-        <p>Rating: <input type="text" name="rating" id="rating"></p>
-        <p>Image: <input type="text" name="image" id="image"></p>
-        <button type="submit">Edit</button>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div>Search Cupcakes</div>
+                <input type="text" name="search-term" id="search-term">
+            
+                <div id="cupcakes-list"><!-- Cupcakes added here --></div>            
+            </div>
+            <div class="col-4">
+                <form action="" id="new-cupcake-form" method="POST">
+                    <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
+                    <p>Size: <input type="text" name="size" id="size"></p>
+                    <p>Rating: <input type="text" name="rating" id="rating"></p>
+                    <p>Image: <input type="text" name="image" id="image"></p>
+                    <p>Ingredients:</p>
+                    <div id="ingredients-list-create"><!-- Ingredient list will be added here --></div>
+                    <button type="submit" class="btn btn-primary float-right">Create</button>
+                </form>
+            
+                <form action="" class="cupcake-edit" method="POST">
+                    <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
+                    <p>Size: <input type="text" name="size" id="size"></p>
+                    <p>Rating: <input type="text" name="rating" id="rating"></p>
+                    <p>Image: <input type="text" name="image" id="image"></p>
+                    <p>Ingredients:</p>
+                    <div id="ingredients-list-edit"><!-- Ingredient list will be added here --></div>
+                    <button type="submit" class="btn btn-primary float-right">Edit</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="http://unpkg.com/jquery"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>

@@ -111,7 +111,8 @@ def update_cupcake(cupcake_id):
     cupcake.flavor = data.get("flavor")
     cupcake.size = data.get("size")
     cupcake.rating = data.get("rating")
-    cupcake.image = data.get("image") or None
+    if data.get("image"):
+        cupcake.image = data.get("image")
 
     cupcake.ingredients = []
     for id in data.get('ingredientIds'):
