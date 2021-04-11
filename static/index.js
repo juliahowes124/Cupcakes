@@ -88,7 +88,7 @@ function generateCupcakeCard(cupcake) {
 		<div class="card cupcake" style="width: 18rem;" data-id="${id}" style="cursor: pointer">
 			<img src="${image}" class="card-img-top" alt="${flavor}">
 			<div class="card-body">
-				<h5 class="card-title">${flavor}</h5>
+				<h5 class="card-title cupcake-flavor">${flavor}</h5>
 				<p class="cupcake-size">${size}<p>
 				<p class="cupcake-rating">${rating}<p>
 			</div>
@@ -96,6 +96,7 @@ function generateCupcakeCard(cupcake) {
 				${ingredientHtml}
 			</ul>
 			<div class="card-body">
+				<button class="edit-btn btn btn-secondary">Edit</button>
 				<button class="delete-btn btn btn-danger">Delete</button>
 			</div>
 		</div>
@@ -113,7 +114,7 @@ function addCupcakesToDom(cupcakes) {
 
 $editForm.hide();
 
-$cupcakesList.on('click','.cupcake', (e) => {
+$cupcakesList.on('click','.edit-btn', (e) => {
 	const $cupcakeLi = $(e.target).closest('.cupcake');
 	let flavor = $cupcakeLi.find('.cupcake-flavor').text();
 	let size = $cupcakeLi.find('.cupcake-size').text();
