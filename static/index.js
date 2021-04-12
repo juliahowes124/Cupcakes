@@ -51,6 +51,7 @@ async function start() {
 async function displayIngredientsOnForm(form) {
 	const response = await axios.get("/api/ingredients");
 	const { ingredients } = response.data;
+	form.empty();
 	for (let {id, name} of ingredients) {
 		form.append(`
 			<input type="checkbox" id="${id}" name="${name}">
@@ -73,7 +74,17 @@ $cupcakeForm.on('submit', async (e) => {
 		}
 	}
 	const { cupcake } = await Cupcake.create({flavor, rating, size, image, ingredientIds}) 
-	$cupcakesList.append(generateCupcakeCard(cupcake))
+	$cupcakesList.append(generateCupcakeCard(cupcake));
+	$cupcakeForm.hide();
+});
+
+$ingredientForm.on('submit', async (e) => {
+	e.preventDefault();
+	let new_ingredient = $ingredientForm.find('#name').val();
+	let response = await axios.post("/api/ingredients", {name: new_ingredient});
+	if(response.ingredient) alert(`${new_ingredient} added to ingredients!`);
+	else alert('Error adding ingredient');
+	$ingredientForm.hide();
 })
 
 $searchTerm.on("input", async (e) => {
@@ -92,8 +103,8 @@ function generateCupcakeCard(cupcake) {
 			<img src="${image}" class="card-img-top" height=300 alt="${flavor}" style="object-fit: cover">
 			<div class="card-body">
 				<h5 class="card-title cupcake-flavor">${flavor}</h5>
-				<p class="cupcake-size">${size}<p>
-				<p class="cupcake-rating">${rating}<p>
+				<span class="cupcake-size badge bg-info">${size}</span>
+				<span class="cupcake-rating badge bg-warning">${rating}</span>
 			</div>
 			<ul class="list-group list-group-flush">
 				${ingredientHtml}
@@ -114,7 +125,6 @@ function addCupcakesToDom(cupcakes) {
 	}
 }
 
-
 $editForm.hide();
 $cupcakeForm.hide();
 $ingredientForm.hide();
@@ -129,6 +139,8 @@ $cupcakesList.on('click','.edit-btn', (e) => {
 	$editForm.find('input[name="size"]').val(size)
 	$editForm.find('input[name="rating"]').val(rating)
 	$editForm.show();
+	$ingredientForm.hide();
+	$cupcakeForm.hide();
 	displayIngredientsOnForm($ingredientsListEdit);
 })
 
@@ -153,18 +165,20 @@ $editForm.on('submit', async (e) => {
 })
 
 $cupcakesList.on('click','.delete-btn', async (e) => {
-	const cupcakeId = $(e.target).closest('li').data('id');
+	const cupcakeId = $(e.target).closest('.cupcake').data('id');
 	await Cupcake.delete(cupcakeId);
-	$(e.target).closest('li').remove();
+	$(e.target).closest('.cupcake').remove();
 })
 
 $addCupcakeBtn.on('click', () => {
 	$ingredientForm.hide();
+	$editForm.hide();
 	$cupcakeForm.show();
 });
 
 $addIngredientBtn.on('click', () => {
 	$cupcakeForm.hide();
+	$editForm.hide();
 	$ingredientForm.show();
 });
 

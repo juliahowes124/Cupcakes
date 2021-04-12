@@ -14,40 +14,49 @@
 <body>
     <h1 class="text-center my-4">Cupcakes</h1>
     <div class="container">
-        <div class="row m-3">
-            <div>Search Cupcakes</div>
-            <input type="text" name="search-term" id="search-term" class="mb-4">
-            <button class="btn btn-primary add-cupcake-btn">Add Cupcake</button>
-            <button class="btn btn-primary add-ingredient-btn">Add Ingredient</button>
+        <div class="row m-3 d-flex justify-content-between">
+            <div>
+                <div>Search Cupcakes</div>
+                <input type="text" name="search-term" id="search-term" class="mb-4">
+            </div>
+            <div class="my-auto">
+                <button class="btn btn-primary add-cupcake-btn mr-1">Add Cupcake</button>
+                <button class="btn btn-info add-ingredient-btn">Add Ingredient</button>
+            </div>
         </div>
         <div class="row">
             <div class="col m-3">
                 <div id="cupcakes-list"><!-- Cupcakes added here --></div>            
             </div>
-            <div class="col">
-                <form action="" id="new-cupcake-form" method="POST">
+            <div class="col m-3">
+                <form action="" id="new-cupcake-form" method="POST" class="float-right
+                text-right">
+                    <h3>Add New Cupcake</h3>
                     <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
                     <p>Size: <input type="text" name="size" id="size"></p>
                     <p>Rating: <input type="text" name="rating" id="rating"></p>
                     <p>Image: <input type="text" name="image" id="image"></p>
-                    <p>Ingredients:</p>
+                    <strong>Ingredients</strong>
                     <div id="ingredients-list-create"><!-- Ingredient list will be added here --></div>
                     <button type="submit" class="btn btn-primary float-right">Create</button>
                 </form>
 
-                <form action="" id="new-ingredient-form" method="POST">
+                <form action="" id="new-ingredient-form" method="POST" class="float-right
+                text-right">
+                    <h3>Add New Ingredient</h3>
                     <p>Name: <input type="text" name="name" id="name"></p>
-                    <button type="submit" class="btn btn-primary float-right">Create</button>
+                    <button type="submit" class="btn btn-info float-right">Create</button>
                 </form>
             
-                <form action="" class="cupcake-edit" method="POST">
+                <form action="" class="cupcake-edit" method="POST" class="float-right text-right">
+                    <h3>Edit Cupcake</h3>
                     <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
                     <p>Size: <input type="text" name="size" id="size"></p>
                     <p>Rating: <input type="text" name="rating" id="rating"></p>
                     <p>Image: <input type="text" name="image" id="image"></p>
-                    <p>Ingredients:</p>
+                    <strong>Ingredients</strong>
                     <div id="ingredients-list-edit"><!-- Ingredient list will be added here --></div>
-                    <button type="submit" class="btn btn-primary float-right">Edit</button>
+                    <button type="submit" class="btn btn-secondary float-right">Edit</button>
                 </form>
             </div>
         </div>
