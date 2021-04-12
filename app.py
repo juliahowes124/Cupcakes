@@ -45,7 +45,7 @@ def add_ingredient():
     data = request.json
 
     ingredient = Ingredient(
-        name=data.get("name")
+        name=data.get("name") or None
     )
 
     db.session.add(ingredient)

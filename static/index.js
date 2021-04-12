@@ -48,16 +48,16 @@ async function start() {
 	displayIngredientsOnForm($ingredientsListCreate);
 }
 
-async function displayIngredientsOnForm(form, checkedIngredients) {
+async function displayIngredientsOnForm(divToAdd, checkedIngredients) {
 	const response = await axios.get("/api/ingredients");
 	const { ingredients } = response.data;
-	form.empty();
+	divToAdd.empty();
 	for (let {id, name} of ingredients) {
 		let checked = false;
 		if (checkedIngredients) {
 			checked = checkedIngredients.includes(name);
 		}
-		form.append(`
+		divToAdd.append(`
 			<input type="checkbox" id="${id}" name="${name}" ${checked ? "checked": ""}>
       <label for="${name}">${name}</label>
 		`)
@@ -84,12 +84,16 @@ $cupcakeForm.on('submit', async (e) => {
 
 $ingredientForm.on('submit', async (e) => {
 	e.preventDefault();
-	let new_ingredient = $ingredientForm.find('#name').val();
-	let response = await axios.post("/api/ingredients", {name: new_ingredient});
-	if(response.data.ingredient) alert(`${new_ingredient} added to ingredients!`);
-	else alert('Error adding ingredient');
+	let newIngredient = $ingredientForm.find('#name').val().trim();
+	if(newIngredient === '') {
+		alert('Ingredient must have a name');
+		return
+	}
+	await axios.post("/api/ingredients", {name: newIngredient});
+	alert(`${newIngredient} added to ingredients!`);
 	$ingredientForm.hide();
 	$cupcakeForm.show();
+	displayIngredientsOnForm($ingredientsListCreate);
 })
 
 $searchTerm.on("input", async (e) => {
