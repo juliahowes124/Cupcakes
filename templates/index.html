@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100vh; overflow: hidden; position: relative">
 
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col m-3">
+            <div class="col mx-3 mb-20" style="overflow-y: scroll; height: 70vh; padding-bottom: 10px;">
                 <div id="cupcakes-list"><!-- Cupcakes added here --></div>            
             </div>
             <div class="col m-3">
@@ -48,7 +48,7 @@
                     <button type="submit" class="btn btn-info float-right">Create</button>
                 </form>
             
-                <form action="" class="cupcake-edit" method="POST" class="float-right text-right">
+                <form action="" class="cupcake-edit float-right text-right" method="POST">
                     <h3>Edit Cupcake</h3>
                     <p>Flavor: <input type="text" name="flavor" id="flavor"></p>
                     <p>Size: <input type="text" name="size" id="size"></p>

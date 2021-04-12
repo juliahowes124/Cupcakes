@@ -48,13 +48,17 @@ async function start() {
 	displayIngredientsOnForm($ingredientsListCreate);
 }
 
-async function displayIngredientsOnForm(form) {
+async function displayIngredientsOnForm(form, checkedIngredients) {
 	const response = await axios.get("/api/ingredients");
 	const { ingredients } = response.data;
 	form.empty();
 	for (let {id, name} of ingredients) {
+		let checked = false;
+		if (checkedIngredients) {
+			checked = checkedIngredients.includes(name);
+		}
 		form.append(`
-			<input type="checkbox" id="${id}" name="${name}">
+			<input type="checkbox" id="${id}" name="${name}" ${checked ? "checked": ""}>
       <label for="${name}">${name}</label>
 		`)
 	}
@@ -82,9 +86,10 @@ $ingredientForm.on('submit', async (e) => {
 	e.preventDefault();
 	let new_ingredient = $ingredientForm.find('#name').val();
 	let response = await axios.post("/api/ingredients", {name: new_ingredient});
-	if(response.ingredient) alert(`${new_ingredient} added to ingredients!`);
+	if(response.data.ingredient) alert(`${new_ingredient} added to ingredients!`);
 	else alert('Error adding ingredient');
 	$ingredientForm.hide();
+	$cupcakeForm.show();
 })
 
 $searchTerm.on("input", async (e) => {
@@ -106,7 +111,7 @@ function generateCupcakeCard(cupcake) {
 				<span class="cupcake-size badge bg-info">${size}</span>
 				<span class="cupcake-rating badge bg-warning">${rating}</span>
 			</div>
-			<ul class="list-group list-group-flush">
+			<ul class="list-group list-group-flush cupcake-ingredients">
 				${ingredientHtml}
 			</ul>
 			<div class="card-body">
@@ -126,7 +131,6 @@ function addCupcakesToDom(cupcakes) {
 }
 
 $editForm.hide();
-$cupcakeForm.hide();
 $ingredientForm.hide();
 
 $cupcakesList.on('click','.edit-btn', (e) => {
@@ -134,6 +138,9 @@ $cupcakesList.on('click','.edit-btn', (e) => {
 	let flavor = $cupcakeLi.find('.cupcake-flavor').text();
 	let size = $cupcakeLi.find('.cupcake-size').text();
 	let rating = $cupcakeLi.find('.cupcake-rating').text();
+	let ingredients = $cupcakeLi.find('.cupcake-ingredients').children();
+	let checkedIngredients = $.map(ingredients, (i) => $(i).text());
+
 	$editForm.data('id', $cupcakeLi.data('id'));
 	$editForm.find('input[name="flavor"]').val(flavor)
 	$editForm.find('input[name="size"]').val(size)
@@ -141,7 +148,7 @@ $cupcakesList.on('click','.edit-btn', (e) => {
 	$editForm.show();
 	$ingredientForm.hide();
 	$cupcakeForm.hide();
-	displayIngredientsOnForm($ingredientsListEdit);
+	displayIngredientsOnForm($ingredientsListEdit, checkedIngredients);
 })
 
 $editForm.on('submit', async (e) => {
